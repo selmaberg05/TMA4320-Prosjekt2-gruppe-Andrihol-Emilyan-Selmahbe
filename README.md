@@ -18,3 +18,8 @@ git commit -m '<describing text>'
 ```bash
 git push
 ```
+
+# fetch latest update
+```bash
+git fetch
+```
