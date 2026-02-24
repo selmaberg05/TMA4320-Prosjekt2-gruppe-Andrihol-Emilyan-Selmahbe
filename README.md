@@ -45,4 +45,26 @@ git checkout <name_of_branch>
 git merge <branch_name> #du må være i den du vil merge inn i. F.eks main. branch_name er den andre
 ```
 
+# Before use 
+
+## Create venv with name env
+```bash
+python3 -m venv env
+```
+
+## Activate venv type
+```bash
+source env/bin/activate 
+```
+
+## Install requirements from requirements.txt type:
+```bash
+pip install -r requirements.txt
+```
+
+# If change in requirements
+```bash
+pip freeze > requirements.txt #freezer nåværende requirements inn i egen fil
+```
+
 
