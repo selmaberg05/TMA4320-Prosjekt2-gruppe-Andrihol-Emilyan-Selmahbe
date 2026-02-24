@@ -19,7 +19,13 @@ git commit -m '<describing text>'
 git push
 ```
 
-# fetch latest update
+## fetch latest update
 ```bash
 git fetch
 ```
+
+## git pull
+```bash
+git pull
+```
+
