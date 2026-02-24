@@ -23,3 +23,13 @@ git push
 ```bash
 git fetch
 ```
+
+## create branch
+```bash
+git checkout -b '<branch_name>'
+```
+
+## switch to branch
+```bash
+git checkout <name_of_branch>
+```
