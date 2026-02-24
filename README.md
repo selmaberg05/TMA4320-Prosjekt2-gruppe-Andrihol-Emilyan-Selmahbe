@@ -67,4 +67,5 @@ pip install -r requirements.txt
 pip freeze > requirements.txt #freezer nåværende requirements inn i egen fil
 ```
 
-
+# Gitignore
+### lagde .gitignore fil og skrev inn navnet på mappa som git skal ignorere
