@@ -29,3 +29,12 @@ git fetch
 git pull
 ```
 
+## create branch
+```bash
+git checkout -b '<branch_name>'
+```
+
+## switch to branch
+```bash
+git checkout <name_of_branch>
+```
