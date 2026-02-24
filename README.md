@@ -1,6 +1,6 @@
-# git-intructions for babes
+# Git-intructions for babes
 
-## add files
+## Add files
 ```bash 
 git add <file_name> #forbokstav+inrykksknapp
 ```
@@ -9,32 +9,40 @@ git add <file_name> #forbokstav+inrykksknapp
 git add .
 ```
 
-## commit staged files
+## Commit staged files
 ```bash
 git commit -m '<describing text>'
 ```
 
-## push commit
+## Push commit
 ```bash
 git push
 ```
 
-## fetch latest update
+## Fetch latest update
 ```bash
 git fetch
 ```
 
-## git pull
+## Git pull
 ```bash
 git pull
 ```
 
-## create branch
+## Create branch
 ```bash
 git checkout -b '<branch_name>'
 ```
 
-## switch to branch
+## Switch to branch
 ```bash
 git checkout <name_of_branch>
 ```
+
+
+## Git merge
+```bash
+git merge <branch_name> #du må være i den du vil merge inn i. F.eks main. branch_name er den andre
+```
+
+
