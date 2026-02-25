@@ -57,6 +57,12 @@ python3 -m venv env
 source env/bin/activate 
 ```
 
+## Connect Git to VScode
+```bash
+git clone https://github.com/selmaberg05/TMA4320-Prosjekt2-gruppe-Andrihol-Emilyan-Selmahbe.git
+```
+
+
 ## Install requirements from requirements.txt type:
 ```bash
 pip install -r requirements.txt
