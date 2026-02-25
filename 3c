@@ -80,8 +80,8 @@ J_analytical = np.zeros_like(alpha_vals, dtype=float)
 for i, alpha in enumerate(alpha_vals):
     J_analytical[i] = J_anal(alpha)
     
-plt.plot(alpha_vals, J_num, label="Numerisk")
-plt.plot(alpha_vals, J_analytical, label="Analytisk")
+plt.plot(alpha_vals, J_num, label="Numerisk", color = "teal")
+plt.plot(alpha_vals, J_analytical, label="Analytisk", color = "purple")
 plt.grid(alpha=0.2)
 plt.xlabel("alpha")
 plt.ylabel("$J_{avg}$")
