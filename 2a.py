@@ -11,7 +11,7 @@ t_steps = 200  # antall tidssteg
 runs = 100     # antall gjennomkjøringer av koden
 delta_t = 1    # lengde på tidssteg
 h = 1          # steglengde
-Bk = 1
+Beta_k = 1
 
 x0 = np.arange(-50, 51) #101 partikler  -50, 49, ... 0, ... 49, 50
 
