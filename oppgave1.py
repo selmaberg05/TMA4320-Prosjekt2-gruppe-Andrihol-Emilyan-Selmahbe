@@ -1,3 +1,5 @@
+## Oppgave 1a)
+
 #importerer nødvendig biblioteker
 import numpy as np
 import matplotlib.pyplot as plt
