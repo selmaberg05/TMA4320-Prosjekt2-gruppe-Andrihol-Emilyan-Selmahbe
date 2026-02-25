@@ -11,14 +11,19 @@ Beta_k = 1000
 T_p_vals = np.linspace(1, 1001, 50).astype(int)
 
 
+
 def build_V1(alpha, N_x):
-    limit = int(alpha * (N_x - 1))
+    limit = int(alpha * N_x)
     n = np.arange(N_x)
-    
-    V = np.empty(N_x, float)
-    V[:limit+1] = n[:limit+1] / limit  # stigende
-    V[limit+1:] = (N_x - 1 - n[limit+1:]) / (N_x - 1 - limit)  # synkende
-    
+
+    V = np.zeros(N_x, dtype=float)
+
+    left = (n <= limit)
+    right = (n > limit)
+
+    V[left]  = n[left] / max(limit, 1)
+    V[right] = (N_x - n[right]) / max((N_x - limit), 1)
+
     return np.concatenate([V, V])
 
 V1 = build_V1(alpha, N_x)
@@ -69,7 +74,7 @@ for i, T_p in enumerate(T_p_vals):
     J_avg[i] = J_sum / (2 * T_p)
     
 plt.plot(T_p_vals, J_avg, color = "teal")
-plt.title("jeg vet ikke hva tittel skal være")
+plt.title("curren noe sånt")
 plt.grid(alpha = 0.2)
 plt.xlabel("$T_p$")
 plt.ylabel("$J_{avg}$")
