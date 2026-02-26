@@ -53,8 +53,8 @@ def hardcore_flash(x0, t_steps):
     
     x = x0.copy().astype(int)
 
-    traj = np.zeros((t_steps + 1, n_par), dtype = int)
-    traj[0] = x
+    t = np.zeros((t_steps + 1, n_par), dtype = int)
+    t[0] = x
     
     for i in range(t_steps):
         
@@ -89,13 +89,13 @@ def hardcore_flash(x0, t_steps):
                     occupied.add(new_site)                 
                     x[j] = new_pos
                     
-        traj[i+1] = x
+        t[i+1] = x
         
     return t
     
 p_plus, p_0, p_minus = (V1, x0, Beta_k)
 
-traj = hardcore_flash(x0, t_steps)
+t = hardcore_flash(x0, t_steps)
 
 for j in range(n_par):
     plt.plot(np.arange(t_steps + 1), t[:, j])
