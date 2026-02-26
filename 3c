@@ -83,7 +83,7 @@ for i, alpha in enumerate(alpha_vals):
 plt.plot(alpha_vals, J_num, label="Numerisk", color = "teal")
 plt.plot(alpha_vals, J_analytical, label="Analytisk", color = "purple")
 plt.grid(alpha=0.2)
-plt.xlabel("alpha")
+plt.xlabel(r"$\alpha$")
 plt.ylabel("$J_{avg}$")
 plt.title("tittel")
 plt.legend()
