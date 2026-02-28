@@ -1,0 +1,128 @@
+## oppgave 4b
+
+import numpy as np
+import math
+import matplotlib.pyplot as plt
+
+alpha = 0.2
+N_x = 100
+Beta_k = 1000
+T_p = 300
+N_s = 10
+N_c = 100    # antall cycles
+b = 20       # størrekse partikkel
+L = N_x * N_s
+t_steps = 2* T_p * N_c
+
+
+def build_V1(alpha, N_x):
+    limit = int(alpha * N_x)
+    n = np.arange(N_x)
+
+    V = np.zeros(N_x, dtype=float)
+
+    left = (n <= limit)
+    right = (n > limit)
+
+    V[left]  = n[left] / max(limit, 1)
+    V[right] = (N_x - n[right]) / max((N_x - limit), 1)
+
+    return np.concatenate([V, V])
+
+V_one = build_V1(alpha, N_x)
+V1 = np.tile(V_one, N_s)       # lager nytt array med V_one 4 ganger, gir lengde L 
+V2 = np.zeros(L)
+
+
+def probability(V, x0, Beta_k):
+    V_l = V[(x0 - 1) % L]
+    V_0 = V[x0]
+    V_r = V[(x0 + 1) % L]
+
+    p_plus  = 1 / (1 + np.exp(-Beta_k*(V_l - V_r)) + np.exp(-Beta_k*(V_0 - V_r)))
+    p_0 = 1 / (1 + np.exp(-Beta_k*(V_r - V_0)) + np.exp(-Beta_k*(V_l - V_0)))
+    p_minus = 1 / (1 + np.exp(-Beta_k*(V_r - V_l)) + np.exp(-Beta_k*(V_0 - V_l)))
+
+    return p_plus, p_0, p_minus
+
+
+def simulate_J_avg(n_par, seed=None):
+
+    if n_par * b > L:
+        return np.nan  # hindrer ufysiske løsninger, blir null
+        
+    x = (np.arange(n_par) * (L // n_par)).astype(int)
+
+    # run
+    J_sum = 0.0
+
+    for t in range(t_steps):
+        off_phase = (t % (2 * T_p)) < T_p
+        V = V2 if off_phase else V1
+
+        occupied = set()
+        for xi in x:
+            for k in range(b):
+                occupied.add((xi + k) % L)
+
+        order = np.random.permutation(n_par)
+
+        n_plus = 0
+        n_minus = 0
+
+        for j in order:
+            if off_phase:
+                p_plus, p_0, p_minus = 1/3, 1/3, 1/3
+            else:
+                p_plus, p_0, p_minus = probability(V, x[j], Beta_k)
+
+            r = np.random.rand()
+            if r <= p_minus:
+                new_pos = (x[j] - 1) % L
+            elif r > (1 - p_plus):
+                new_pos = (x[j] + 1) % L
+            else:
+                continue  # stays
+
+            if new_pos == (x[j] + 1) % L:
+                new_site = (x[j] + b) % L
+                if new_site not in occupied:
+                    occupied.remove(x[j])
+                    occupied.add(new_site)
+                    x[j] = new_pos
+                    n_plus += 1
+
+            elif new_pos == (x[j] - 1) % L:
+                new_site = (x[j] - 1) % L
+                if new_site not in occupied:
+                    occupied.remove((x[j] + b - 1) % L)
+                    occupied.add(new_site)
+                    x[j] = new_pos
+                    n_minus += 1
+
+        J_t = (n_plus - n_minus) / n_par
+        J_sum += J_t
+
+    return J_sum / t_steps
+
+rho_vals = np.linspace(0, 1, 11)
+J_vals = []
+
+for rho in rho_vals:
+    n_par = int(round(rho * (N_s * N_x) / b))
+    n_par = max(n_par, 1) if rho > 0 else 1 
+    if rho == 0:
+        J_vals.append(0.0)
+        continue
+
+    J = simulate_J_avg(n_par)
+    J_vals.append(J)  
+
+plt.plot(rho_vals, J_vals, marker = "o")  # ta med markers?
+plt.title("oppgave 4b")
+plt.grid(alpha = 0.25)
+plt.xlabel("rho")
+plt.ylabel("J(rho))")
+plt.show()
+
+# bruke clip for sensitivitet? for p_plus og p_minus
