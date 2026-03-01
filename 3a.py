@@ -1,5 +1,3 @@
-## oppgave 3a)
-
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -7,23 +5,27 @@ alpha = 0.8
 T_p = 500
 h = 1
 N_x = 100
-P = 2 * N_x      #periode P, gjentas 2 ganger
-N_p = 12 * N_x
-delta_t = 1
+P = 2 * N_x         # Lengde på system, to sagtanner
+N_p = 12 * N_x      # Antall partikler
 Beta_k = 1000
 n_steps = 20 * T_p
 
+np.random.seed(0)   # Velger seed for å kunne reprodusere resultat
 
 
 def build_V1(alpha, N_x):
-    limit = int(alpha * (N_x - 1))
+    peak = int(alpha * (N_x - 1))
     n = np.arange(N_x)
-    
-    V = np.empty(N_x, float)
-    V[:limit+1] = n[:limit+1] / limit  # stigende
-    V[limit+1:] = (N_x - 1 - n[limit+1:]) / (N_x - 1 - limit)  # synkende
+    V = np.zeros(N_x, dtype=float)
+
+    left = (n <= peak)
+    right = (n > peak)
+
+    V[left]  = n[left] / max(peak, 1)
+    V[right] = (N_x - 1 - n[right]) / max((N_x - 1 - peak), 1)
     
     return np.concatenate([V, V])
+
 
 V1 = build_V1(alpha, N_x)
 V2 = np.zeros(P)
@@ -35,15 +37,16 @@ J = np.zeros(n_steps)
 for i in range(n_steps):
 
     if ((i // T_p) % 2 == 0):
-        p_minus = 1/3
-        p_plus  = 1/3
+        V = V2
     else:
-        V_l = V1[(x - 1) % P]
-        V_0 = V1[x]
-        V_r = V1[(x + 1) % P]
+        V = V1
+        
+    V_l = V[(x - 1) % P]
+    V_0 = V[x]
+    V_r = V[(x + 1) % P]
 
-        p_plus  = 1 / (1 + np.exp(-Beta_k*(V_l - V_r)) + np.exp(-Beta_k*(V_0 - V_r)))
-        p_minus = 1 / (1 + np.exp(-Beta_k*(V_r - V_l)) + np.exp(-Beta_k*(V_0 - V_l)))
+    p_plus  = 1 / (1 + np.exp(-Beta_k*(V_l - V_r)) + np.exp(-Beta_k*(V_0 - V_r)))
+    p_minus = 1 / (1 + np.exp(-Beta_k*(V_r - V_l)) + np.exp(-Beta_k*(V_0 - V_l)))
 
     r = np.random.rand(len(x))
     
@@ -65,6 +68,5 @@ for n in range(10):
     end = (n + 1) * cycle_length
     J_avg[n] = np.mean(J[start:end])
     print(n, J_avg[n])
-       
 
-# bruke clip for sensitivitet? for p_plus og p_minus
+print(V1[0], V1[N_x-1], V1[N_x], V1[2*N_x-1], V1.max())
